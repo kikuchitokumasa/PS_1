@@ -189,7 +189,7 @@
 //     }
 // }
 
-//1-8
+//1-8 1-9
 class MyScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MyScene', active: true });
@@ -246,12 +246,11 @@ class MyScene extends Phaser.Scene {
 
     // hanakoにぶつかったときの処理
     handleCollision() {
-        // 文字列 "痛い！" を表示
-        this.add.text(100, 150, '痛い！', { fontSize: '24px', fill: '#fff' });
+        // 文字列 "痛い" を表示
+        this.add.text(100, 150, '痛い', { fontSize: '24px', fill: '#fff' });
 
-        // hanakoをランダムな座標に再配置
-        this.hanako.setPosition(Phaser.Math.Between(200, 400), Phaser.Math.Between(100, 200));
-        this.hanako.setVelocity(Phaser.Math.Between(-50, 50), Phaser.Math.Between(-50, 50));
+        // hanakoオブジェクトを完全に削除
+        this.hanako.destroy();
+        this.hanako = null;
     }
 }
-
