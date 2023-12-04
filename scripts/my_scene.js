@@ -157,6 +157,39 @@
 // }
 
 //1-7
+// class MyScene extends Phaser.Scene {
+//     constructor() {
+//         super({ key: 'MyScene', active: true });
+//     }
+
+//     preload() {
+//         this.load.image('back', 'assets/background.png');
+//         this.load.image('hanako', 'assets/hanako.png');
+//     }
+
+//     create() {
+//         this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
+
+//         // Arcade Physicsを有効にする
+//         this.physics.world.enable(this.back);
+
+//         this.hanakoGroup = this.physics.add.group(); // hanakoを格納するグループ
+
+//         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
+//     }
+
+//     update() {
+//       
+//         if (this.input.keyboard.checkDown(this.input.keyboard.addKey('W'), 250)) {
+//             const randomX = Phaser.Math.Between(100, 400);
+//             const hanako = this.hanakoGroup.create(randomX, 100, 'hanako');
+//             // hanakoオブジェクトにArcade Physicsを有効にする
+//             this.physics.world.enable(hanako);
+//         }
+//     }
+// }
+
+//1-8
 class MyScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MyScene', active: true });
@@ -170,21 +203,21 @@ class MyScene extends Phaser.Scene {
     create() {
         this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
 
-        // Arcade Physicsを有効にする
+
         this.physics.world.enable(this.back);
 
-        this.hanakoGroup = this.physics.add.group(); // hanakoを格納するグループ
+        this.hanako = this.physics.add.sprite(0, 0, 'hanako'); 
 
         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
+
+
+        this.time.addEvent({ delay: 3000, callback: this.placeHanako, callbackScope: this, loop: true });
     }
 
-    update() {
-        // キーボードの w キーを押す度に Arcade Physicsを使ってhanakoオブジェクトを座標 (100～400, 100) に動的配置する
-        if (this.input.keyboard.checkDown(this.input.keyboard.addKey('W'), 250)) {
-            const randomX = Phaser.Math.Between(100, 400);
-            const hanako = this.hanakoGroup.create(randomX, 100, 'hanako');
-            // hanakoオブジェクトにArcade Physicsを有効にする
-            this.physics.world.enable(hanako);
-        }
+    placeHanako() {
+        const randomX = Phaser.Math.Between(200, 400);
+        const randomY = Phaser.Math.Between(100, 200);
+        
+        this.hanako.setPosition(randomX, randomY);
     }
 }
