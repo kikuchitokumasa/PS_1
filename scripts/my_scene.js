@@ -86,6 +86,77 @@
 //          }
 
 //1-5 1-6
+// class MyScene extends Phaser.Scene {
+//     constructor() {
+//         super({ key: 'MyScene', active: true });
+//     }
+
+//     preload() {
+//         this.load.image('back', 'assets/background.png');
+//         this.load.image('taro', 'assets/taro.png');
+//         this.load.image('jiro', 'assets/jiro.png');
+//     }
+
+//     create() {
+//         this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
+//         this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
+//         this.jiro = this.add.image(D_WIDTH / 3, D_HEIGHT / 3, 'jiro');
+//         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
+    
+//         this.worldText = this.add.text(600, 400, 'MyWorld', { fontSize: '24px', fill: '#fff' });
+
+//         this.cursors = this.input.keyboard.createCursorKeys();
+//         this.input.keyboard.on('keydown-A', this.handleAKey, this);
+//         this.input.keyboard.on('keydown-S', this.handleSKey, this);
+//         this.input.keyboard.on('keydown-D', this.handleDKey, this);
+
+//         this.additionalText = null;
+//     }
+
+//     update() {
+
+//         if (this.cursors.right.isDown) {
+//             this.taro.x += 50;
+//         } else if (this.cursors.left.isDown) {
+//             this.taro.x -= 50;
+//         }
+
+//         if (this.cursors.right.isDown) {
+//             this.jiro.x -= 50;
+//         } else if (this.cursors.left.isDown) {
+//             this.jiro.x += 50;
+//         }
+//     }
+
+//     handleAKey() {
+//         if (this.additionalText) {
+//             this.additionalText.destroy();
+//         }
+//         this.additionalText = this.add.text(100, 50, 'Hello!', { fontSize: '24px', fill: '#fff' });
+//     }
+
+//     handleSKey() {
+      
+//         if (this.additionalText) {
+//             this.additionalText.destroy();
+//         }
+  
+//         this.additionalText = this.add.text(100, 50, 'Hey!', { fontSize: '24px', fill: '#fff' });
+//     }
+
+
+//     handleDKey() {
+   
+//         if (this.additionalText) {
+//             this.additionalText.destroy();
+//             this.additionalText = null;
+//         }
+    
+//         this.worldText.setText('');
+//     }
+// }
+
+//1-7
 class MyScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MyScene', active: true });
@@ -93,65 +164,27 @@ class MyScene extends Phaser.Scene {
 
     preload() {
         this.load.image('back', 'assets/background.png');
-        this.load.image('taro', 'assets/taro.png');
-        this.load.image('jiro', 'assets/jiro.png');
+        this.load.image('hanako', 'assets/hanako.png');
     }
 
     create() {
         this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
-        this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
-        this.jiro = this.add.image(D_WIDTH / 3, D_HEIGHT / 3, 'jiro');
+
+        // Arcade Physicsを有効にする
+        this.physics.world.enable(this.back);
+
+        this.hanakoGroup = this.physics.add.group(); // hanakoを格納するグループ
+
         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
-    
-        this.worldText = this.add.text(600, 400, 'MyWorld', { fontSize: '24px', fill: '#fff' });
-
-        this.cursors = this.input.keyboard.createCursorKeys();
-        this.input.keyboard.on('keydown-A', this.handleAKey, this);
-        this.input.keyboard.on('keydown-S', this.handleSKey, this);
-        this.input.keyboard.on('keydown-D', this.handleDKey, this);
-
-        this.additionalText = null;
     }
 
     update() {
-
-        if (this.cursors.right.isDown) {
-            this.taro.x += 50;
-        } else if (this.cursors.left.isDown) {
-            this.taro.x -= 50;
+        // キーボードの w キーを押す度に Arcade Physicsを使ってhanakoオブジェクトを座標 (100～400, 100) に動的配置する
+        if (this.input.keyboard.checkDown(this.input.keyboard.addKey('W'), 250)) {
+            const randomX = Phaser.Math.Between(100, 400);
+            const hanako = this.hanakoGroup.create(randomX, 100, 'hanako');
+            // hanakoオブジェクトにArcade Physicsを有効にする
+            this.physics.world.enable(hanako);
         }
-
-        if (this.cursors.right.isDown) {
-            this.jiro.x -= 50;
-        } else if (this.cursors.left.isDown) {
-            this.jiro.x += 50;
-        }
-    }
-
-    handleAKey() {
-        if (this.additionalText) {
-            this.additionalText.destroy();
-        }
-        this.additionalText = this.add.text(100, 50, 'Hello!', { fontSize: '24px', fill: '#fff' });
-    }
-
-    handleSKey() {
-      
-        if (this.additionalText) {
-            this.additionalText.destroy();
-        }
-  
-        this.additionalText = this.add.text(100, 50, 'Hey!', { fontSize: '24px', fill: '#fff' });
-    }
-
-
-    handleDKey() {
-   
-        if (this.additionalText) {
-            this.additionalText.destroy();
-            this.additionalText = null;
-        }
-    
-        this.worldText.setText('');
     }
 }
