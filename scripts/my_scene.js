@@ -10,14 +10,12 @@
 
 //     // シーンの事前読み込み処理
 //     preload() {
-//          // 画像の読み込み(使用する時の名前, パス)
 //         this.load.image('back', 'assets/background.png');
 //         this.load.image('taro', 'assets/taro.png');
 //     }
 
 //     // シーン初期化処理
 //     create() {
-//          // 単体画像をシーンに追加(X座標,Y座標,画像名)
 //         this.back = this.add.image(D_WIDTH/2, D_HEIGHT/2, 'back');
 //         this.taro = this.add.image(D_WIDTH/2, D_HEIGHT/2, 'taro');
 //         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
@@ -25,7 +23,6 @@
 //         this.taro_direction = 1;
 //     }
     
-//   // 毎フレーム実行される繰り返し処理
 //     update() {
 //         if (this.taro.y >= D_WIDTH - 100) this.taro_direction = -1;
 
@@ -65,10 +62,8 @@
 //     }
 
 //     update() {
-//         // this.taro.angle を5度ずつ増加させる
 //         this.taro.angle += 5;
 
-//         // 角度をラジアンに変換
 //         const angleInRadians = Phaser.Math.DegToRad(this.taro.angle);
 
 //         if (this.taro.y >= D_WIDTH - 100) this.taro_direction = -1;
@@ -77,12 +72,12 @@
                 
 //                  if (this.taro_direction == 1) {
         
-//                      this.taro.x += 5;// 横方向へ移動を設定
+//                      this.taro.x += 5;
 //                      this.taro.y += 5;
                 
 //                  } else {
                 
-//                       this.taro.x -= 5;// 横方向へ移動を設定
+//                       this.taro.x -= 5;
 //                       this.taro.y -= 5;
                 
 //                  }
@@ -92,21 +87,43 @@
 
 //1-5
 class MyScene extends Phaser.Scene {
-         constructor() {
-            super({ key: 'MyScene', active: true });
-        }
-    
-         preload() {
+    constructor() {
+        super({ key: 'MyScene', active: true });
+    }
+
+    preload() {
         this.load.image('back', 'assets/background.png');
         this.load.image('taro', 'assets/taro.png');
+        this.load.image('jiro', 'assets/jiro.png');
+    }
+
+    create() {
+        this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
+        this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
+        this.jiro = this.add.image(D_WIDTH / 3, D_HEIGHT / 3, 'jiro');
+        this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
+
+        this.taro_direction = 1;
+        this.taro.angle = 0;
+
+        this.jiro_direction = 1;
+        this.jiro.angle = 0;
+
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+    }
+
+    update() {
+        if (this.cursors.right.isDown) {
+            this.taro.x += 50;
+        } else if (this.cursors.left.isDown) {
+            this.taro.x -= 50;
         }
-    
-        create() {
-             this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
-             this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
-            this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
-    
-            this.taro_direction = 1;
-             this.taro.angle = 0; // 初期角度を0度に設定
-         }
+
+        if (this.cursors.right.isDown) {
+            this.jiro.x -= 50;
+        } else if (this.cursors.left.isDown) {
+            this.jiro.x += 50;
         }
+    }
+}
