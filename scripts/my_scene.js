@@ -209,8 +209,10 @@ class MyScene extends Phaser.Scene {
 
         // hanakoオブジェクト
         this.hanako = this.physics.add.sprite(Phaser.Math.Between(200, 400), Phaser.Math.Between(100, 200), 'hanako');
-        this.hanako.setVelocity(Phaser.Math.Between(-50, 50), Phaser.Math.Between(-50, 50));
         this.hanako.setCollideWorldBounds(true);
+
+        // hanakoオブジェクトの範囲を制限
+        this.hanako.body.collideWorldBounds = true;
 
         // taroオブジェクト
         this.taro = this.physics.add.sprite(100, 100, 'taro');
@@ -223,6 +225,9 @@ class MyScene extends Phaser.Scene {
 
         // hanakoにぶつかったときの処理
         this.physics.add.collider(this.taro, this.hanako, this.handleCollision, null, this);
+
+        // 3秒経過後にhanakoをランダムな座標に配置
+        this.time.delayedCall(3000, this.randomizeHanakoPosition, [], this);
     }
 
     update() {
@@ -247,10 +252,14 @@ class MyScene extends Phaser.Scene {
     // hanakoにぶつかったときの処理
     handleCollision() {
         // 文字列 "痛い" を表示
-        this.add.text(100, 150, '痛い', { fontSize: '24px', fill: '#fff' });
+        this.add.text(100, 150, '痛い', { fontSize: '24px', fill: 'red' });
 
-        // hanakoオブジェクトを完全に削除
-        this.hanako.destroy();
-        this.hanako = null;
+        // シーンを終了
+        this.scene.stop('MyScene');
+    }
+
+    // hanakoをランダムな座標に配置するメソッド
+    randomizeHanakoPosition() {
+        this.hanako.setPosition(Phaser.Math.Between(200, 400), Phaser.Math.Between(100, 200));
     }
 }
