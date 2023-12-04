@@ -85,7 +85,7 @@
         
 //          }
 
-//1-5
+//1-5 1-6
 class MyScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MyScene', active: true });
@@ -102,17 +102,19 @@ class MyScene extends Phaser.Scene {
         this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
         this.jiro = this.add.image(D_WIDTH / 3, D_HEIGHT / 3, 'jiro');
         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
-        
+    
         this.worldText = this.add.text(600, 400, 'MyWorld', { fontSize: '24px', fill: '#fff' });
 
-        
         this.cursors = this.input.keyboard.createCursorKeys();
         this.input.keyboard.on('keydown-A', this.handleAKey, this);
         this.input.keyboard.on('keydown-S', this.handleSKey, this);
         this.input.keyboard.on('keydown-D', this.handleDKey, this);
+
+        this.additionalText = null;
     }
 
     update() {
+
         if (this.cursors.right.isDown) {
             this.taro.x += 50;
         } else if (this.cursors.left.isDown) {
@@ -127,14 +129,29 @@ class MyScene extends Phaser.Scene {
     }
 
     handleAKey() {
-        this.add.text(100, 50, 'Hello!', { fontSize: '24px', fill: '#fff' });
+        if (this.additionalText) {
+            this.additionalText.destroy();
+        }
+        this.additionalText = this.add.text(100, 50, 'Hello!', { fontSize: '24px', fill: '#fff' });
     }
 
     handleSKey() {
-        this.add.text(100, 50, 'Hey!', { fontSize: '24px', fill: '#fff' });
+      
+        if (this.additionalText) {
+            this.additionalText.destroy();
+        }
+  
+        this.additionalText = this.add.text(100, 50, 'Hey!', { fontSize: '24px', fill: '#fff' });
     }
 
+
     handleDKey() {
-        this.worldText.setText(''); 
+   
+        if (this.additionalText) {
+            this.additionalText.destroy();
+            this.additionalText = null;
+        }
+    
+        this.worldText.setText('');
     }
 }
