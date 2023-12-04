@@ -102,15 +102,14 @@ class MyScene extends Phaser.Scene {
         this.taro = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'taro');
         this.jiro = this.add.image(D_WIDTH / 3, D_HEIGHT / 3, 'jiro');
         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
+        
+        this.worldText = this.add.text(600, 400, 'MyWorld', { fontSize: '24px', fill: '#fff' });
 
-        this.taro_direction = 1;
-        this.taro.angle = 0;
-
-        this.jiro_direction = 1;
-        this.jiro.angle = 0;
-
-
+        
         this.cursors = this.input.keyboard.createCursorKeys();
+        this.input.keyboard.on('keydown-A', this.handleAKey, this);
+        this.input.keyboard.on('keydown-S', this.handleSKey, this);
+        this.input.keyboard.on('keydown-D', this.handleDKey, this);
     }
 
     update() {
@@ -125,5 +124,17 @@ class MyScene extends Phaser.Scene {
         } else if (this.cursors.left.isDown) {
             this.jiro.x += 50;
         }
+    }
+
+    handleAKey() {
+        this.add.text(100, 50, 'Hello!', { fontSize: '24px', fill: '#fff' });
+    }
+
+    handleSKey() {
+        this.add.text(100, 50, 'Hey!', { fontSize: '24px', fill: '#fff' });
+    }
+
+    handleDKey() {
+        this.worldText.setText(''); 
     }
 }
