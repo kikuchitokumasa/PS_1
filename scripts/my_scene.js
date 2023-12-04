@@ -198,26 +198,60 @@ class MyScene extends Phaser.Scene {
     preload() {
         this.load.image('back', 'assets/background.png');
         this.load.image('hanako', 'assets/hanako.png');
+        this.load.image('taro', 'assets/taro.png');
     }
 
     create() {
         this.back = this.add.image(D_WIDTH / 2, D_HEIGHT / 2, 'back');
 
-
+        // Arcade Physicsを有効にする
         this.physics.world.enable(this.back);
 
-        this.hanako = this.physics.add.sprite(0, 0, 'hanako'); 
+        // hanakoオブジェクト
+        this.hanako = this.physics.add.sprite(Phaser.Math.Between(200, 400), Phaser.Math.Between(100, 200), 'hanako');
+        this.hanako.setVelocity(Phaser.Math.Between(-50, 50), Phaser.Math.Between(-50, 50));
+        this.hanako.setCollideWorldBounds(true);
+
+        // taroオブジェクト
+        this.taro = this.physics.add.sprite(100, 100, 'taro');
+        this.taro.setCollideWorldBounds(true);
+
+        // キーボードの入力を受け付ける
+        this.cursors = this.input.keyboard.createCursorKeys();
 
         this.text = this.add.text(10, 10, 'Scene 1').setFontSize(32).setColor('#ff0');
 
-
-        this.time.addEvent({ delay: 3000, callback: this.placeHanako, callbackScope: this, loop: true });
+        // hanakoにぶつかったときの処理
+        this.physics.add.collider(this.taro, this.hanako, this.handleCollision, null, this);
     }
 
-    placeHanako() {
-        const randomX = Phaser.Math.Between(200, 400);
-        const randomY = Phaser.Math.Between(100, 200);
-        
-        this.hanako.setPosition(randomX, randomY);
+    update() {
+        // キーボードの矢印キーでtaroを上下左右に移動
+        if (this.cursors.up.isDown) {
+            this.taro.setVelocityY(-200);
+        } else if (this.cursors.down.isDown) {
+            this.taro.setVelocityY(200);
+        } else {
+            this.taro.setVelocityY(0);
+        }
+
+        if (this.cursors.left.isDown) {
+            this.taro.setVelocityX(-200);
+        } else if (this.cursors.right.isDown) {
+            this.taro.setVelocityX(200);
+        } else {
+            this.taro.setVelocityX(0);
+        }
+    }
+
+    // hanakoにぶつかったときの処理
+    handleCollision() {
+        // 文字列 "痛い！" を表示
+        this.add.text(100, 150, '痛い！', { fontSize: '24px', fill: '#fff' });
+
+        // hanakoをランダムな座標に再配置
+        this.hanako.setPosition(Phaser.Math.Between(200, 400), Phaser.Math.Between(100, 200));
+        this.hanako.setVelocity(Phaser.Math.Between(-50, 50), Phaser.Math.Between(-50, 50));
     }
 }
+
